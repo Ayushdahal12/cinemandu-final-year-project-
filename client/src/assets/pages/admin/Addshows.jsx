@@ -4,8 +4,12 @@ import Title from './Title';
 import { dummyShowsData } from '../../assets';
 import { StarIcon, CheckIcon, XIcon } from 'lucide-react';
 import { kConverter } from '../../lib/kconverter';
+import { useAppContext } from '../../../context/appcontext';
+import toast from 'react-hot-toast';
 
 const AddShows = () => {
+  const { axios, getToken, user, image_base_url } = useAppContext()
+
   const currency = import.meta.env.VITE_CURRENCY
 
   const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
@@ -13,9 +17,19 @@ const AddShows = () => {
   const [dateTimeSelection, setDateTimeSelection] = useState({});
   const [dateTimeInput, setDateTimeInput] = useState("");
   const [showPrice, setShowPrice] = useState("");
+  const [addingshow, setAddingshow] = useState(false);
 
   const fetchNowPlayingMovies = async () => {
-    setNowPlayingMovies(dummyShowsData);
+    try {
+      const { data } = await axios.get('/api/show/now-playing', {
+        headers: { Authorization: `Bearer ${await getToken()}` }
+      })
+      if (data.success) {
+        setNowPlayingMovies(data.movies)
+      }
+    } catch (error) {
+      console.error("Error fetching movies:", error);
+    }
   };
 
   const handleDateTimeAdd = () => {
@@ -32,7 +46,6 @@ const AddShows = () => {
     });
   };
 
-  // ✅ Added missing handleRemoveTime function
   const handleRemoveTime = (date, time) => {
     setDateTimeSelection((prev) => {
       const updatedTimes = prev[date].filter((t) => t !== time);
@@ -44,9 +57,46 @@ const AddShows = () => {
     });
   };
 
+  const handleSumbit = async () => {
+    try {
+      setAddingshow(true)
+
+      if (!selectedMovie || Object.keys(dateTimeSelection).length === 0 || !showPrice) {
+        return toast('Missing required fields');
+      }
+
+      const showsInput = Object.entries(dateTimeSelection).map(([date, time]) => ({ date, time }));
+
+      const payload = {
+        movieId: selectedMovie,
+        showsInput,
+        showPrice: Number(showPrice)
+      }
+
+      const { data } = await axios.post('/api/show/add', payload, {
+        headers: { Authorization: `Bearer ${await getToken()}` }
+      })
+
+      if (data.success) {
+        toast.success(data.message);
+        setSelectedMovie(null)
+        setDateTimeSelection({})
+        setShowPrice("")
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.error("sumbission error:", error);
+      toast.error("An error occurred please try again later.");
+    }
+    setAddingshow(false)
+  }
+
   useEffect(() => {
-    fetchNowPlayingMovies();
-  }, []);
+    if (user) {
+      fetchNowPlayingMovies();
+    }
+  }, [user]);
 
   return nowPlayingMovies.length > 0 ? (
     <>
@@ -61,7 +111,7 @@ const AddShows = () => {
               onClick={() => setSelectedMovie(movie.id)}
             >
               <div className="relative rounded-lg overflow-hidden">
-                <img src={movie.poster_path} alt={movie.title} className="w-full object-cover brightness-90" />
+                <img src={image_base_url + movie.poster_path} alt={movie.title} className="w-full object-cover brightness-90" />
                 <div className="text-sm flex items-center justify-between p-2 bg-black/70 w-full absolute bottom-0 left-0">
                   <p className="flex items-center gap-1 text-gray-400">
                     <StarIcon className="w-4 h-4 text-primary fill-primary" />
@@ -82,7 +132,6 @@ const AddShows = () => {
         </div>
       </div>
 
-      {/* Show Price Input */}
       <div className="mt-8">
         <label className="block text-sm font-medium mb-2">Show Price</label>
         <div className="inline-flex items-center gap-2 border border-gray-600 px-3 py-2 rounded-md">
@@ -98,7 +147,6 @@ const AddShows = () => {
         </div>
       </div>
 
-      {/* Date & Time Selection */}
       <div className="mt-6">
         <label className="block text-sm font-medium mb-2">Select Date and Time</label>
         <div className="inline-flex gap-5 border border-gray-600 p-1 pl-3 rounded-lg">
@@ -117,7 +165,6 @@ const AddShows = () => {
         </div>
       </div>
 
-      {/* Display Selected Times */}
       {Object.keys(dateTimeSelection).length > 0 && (
         <div className="mt-6">
           <h2 className="mb-2">Selected Date-Time</h2>
@@ -129,7 +176,6 @@ const AddShows = () => {
                   {times.map((time) => (
                     <div key={time} className="border border-primary px-2 py-1 flex items-center rounded">
                       <span>{time}</span>
-                      {/* ✅ Replaced DeleteIcon with XIcon from lucide-react */}
                       <XIcon
                         onClick={() => handleRemoveTime(date, time)}
                         width={15}
@@ -144,11 +190,11 @@ const AddShows = () => {
         </div>
       )}
 
-      <button className="bg-primary text-white px-8 py-2 mt-6 rounded hover:bg-primary/90 transition-all cursor-pointer">
+      <button onClick={handleSumbit} disabled={addingshow} className="bg-primary text-white px-8 py-2 mt-6 rounded hover:bg-primary/90 transition-all cursor-pointer">
         Add Show
       </button>
     </>
-  ) : <Loading />;
+  ) : <Loading />
 }
 
 export default AddShows;

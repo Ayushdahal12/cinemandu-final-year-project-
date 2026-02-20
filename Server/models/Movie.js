@@ -1,6 +1,4 @@
-import mangoose from "mongoose";    
-
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const movieSchema = new mongoose.Schema(
     {
@@ -21,4 +19,4 @@ const movieSchema = new mongoose.Schema(
 
 const Movie = mongoose.model('Movie', movieSchema);
 
-export default Movie;   
+export default Movie;

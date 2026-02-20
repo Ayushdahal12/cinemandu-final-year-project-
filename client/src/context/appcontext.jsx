@@ -50,9 +50,13 @@ export const AppProvider = ({ children }) => {
 
     const fetchFavoriteMovies = async () => {
         try {
-            const { data } = await axios.get('/api/user/favorites', { headers: { Authorization: `Bearer ${await getToken()}` } })
+            const token = await getToken()
+            if (!token) return
+            const { data } = await axios.get('/api/user/favorites', { 
+                headers: { Authorization: `Bearer ${token}` } 
+            })
             if (data.success) {
-                setFavoriteMovies(data.favorites)
+                setFavoriteMovies(data.movies)
             } else {
                 toast.error(data.message)
             }
@@ -69,6 +73,8 @@ export const AppProvider = ({ children }) => {
         if (user) {
             fetchIsAdmin()
             fetchFavoriteMovies()
+        } else {
+            setFavoriteMovies([])
         }
     }, [user])
 
@@ -76,7 +82,7 @@ export const AppProvider = ({ children }) => {
         axios,
         fetchIsAdmin,
         user, getToken, navigate, isAdmin, shows,
-        favoriteMovies, fetchFavoriteMovies , image_base_url 
+        favoriteMovies, fetchFavoriteMovies, image_base_url
     }
 
     return (
@@ -87,5 +93,3 @@ export const AppProvider = ({ children }) => {
 }
 
 export const useAppContext = () => useContext(AppContext)
-
-

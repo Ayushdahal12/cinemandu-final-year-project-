@@ -224,7 +224,7 @@ const PaymentPage = () => {
                 {/* Amount Box */}
                 <div className='bg-primary/10 border border-primary/20 rounded-xl p-6 mb-10 text-center'>
                     <p className='text-gray-400 text-sm mb-1'>Payment to</p>
-                    <p className='text-white font-bold text-lg mb-3'>🎬 Cineway Pvt. Ltd.</p>
+                    <p className='text-white font-bold text-lg mb-3'>🎬 Cinemandu Pvt. Ltd.</p>
                     <p className='text-gray-400 text-sm mb-1'>Total Amount</p>
                     <p className='text-4xl font-bold text-primary mt-1'>NPR {amount}</p>
                     <p className='text-gray-500 text-xs mt-2'>Inclusive of all taxes</p>

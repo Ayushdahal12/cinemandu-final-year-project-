@@ -12,15 +12,19 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.78.0",
     "@clerk/express": "^1.7.71",
+    "@google/generative-ai": "^0.24.1",
     "axios": "^1.13.5",
     "cloudinary": "^2.9.0",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
+    "groq-sdk": "^0.37.0",
     "inngest": "^3.52.1",
     "mongoose": "^9.2.1",
     "nodemailer": "^8.0.1",
+    "openai": "^6.22.0",
     "qrcode": "^1.5.4"
   },
   "devDependencies": {

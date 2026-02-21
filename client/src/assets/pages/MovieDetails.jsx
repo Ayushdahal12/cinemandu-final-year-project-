@@ -9,6 +9,7 @@ import MovieCard from '../components/MovieCard'
 import Loading from '../components/Loading'
 import { useAppContext } from '../../context/appcontext'
 import toast from 'react-hot-toast'
+import AIMovieChatbot from '../components/AIMovieChatbot'
 
 const Moviedetails = () => {
   const navigate = useNavigate()
@@ -100,11 +101,10 @@ const Moviedetails = () => {
               className='bg-gray-700 p-2.5 rounded-full transition cursor-pointer active:scale-95'
             >
               <Heart
-                className={`w-5 h-5 ${
-                  favoriteMovies?.some(m => m._id === show.movie._id)
+                className={`w-5 h-5 ${favoriteMovies?.some(m => m._id === show.movie._id)
                     ? 'fill-red-500 text-red-500'
                     : 'fill-none text-white'
-                }`}
+                  }`}
               />
             </button>
           </div>
@@ -144,6 +144,7 @@ const Moviedetails = () => {
           Show more
         </button>
       </div>
+      <AIMovieChatbot movie={show.movie} />
     </div>
   ) : (
     <Loading />

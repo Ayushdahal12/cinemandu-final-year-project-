@@ -17,6 +17,9 @@ import bookingRouter from './routes/bookingRoutes.js';
 import adminRouter from './routes/adminRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import theaterRouter from './routes/theaterRoutes.js'
+import aiRouter from './routes/aiRoutes.js'   // add with other imports
+             
+
 
 
 
@@ -38,6 +41,7 @@ app.use('/api/booking', bookingRouter)
 app.use('/api/admin', adminRouter)
 app.use('/api/user', userRouter)
 app.use('/api/theater', theaterRouter)
+app.use('/api/ai', aiRouter)    // add AI routes
 
 
 

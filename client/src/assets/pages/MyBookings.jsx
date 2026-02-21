@@ -80,31 +80,25 @@ const MyBookings = () => {
         format: [80, 130]
       })
 
-      // Background
       doc.setFillColor(15, 15, 15)
       doc.rect(0, 0, 80, 130, 'F')
 
-      // Red top bar
       doc.setFillColor(225, 29, 72)
       doc.rect(0, 0, 80, 14, 'F')
 
-      // Title
       doc.setTextColor(255, 255, 255)
       doc.setFontSize(13)
       doc.setFont('helvetica', 'bold')
       doc.text('CINEMANDU', 40, 9, { align: 'center' })
 
-      // Movie title
       doc.setTextColor(255, 255, 255)
       doc.setFontSize(10)
       doc.setFont('helvetica', 'bold')
       doc.text(item.show.movie.title, 40, 22, { align: 'center' })
 
-      // Divider
       doc.setDrawColor(55, 65, 81)
       doc.line(5, 27, 75, 27)
 
-      // Details
       doc.setFontSize(7)
       doc.setFont('helvetica', 'normal')
 
@@ -130,17 +124,14 @@ const MyBookings = () => {
       doc.setFontSize(9)
       doc.text(`NPR ${item.amount}`, 8, 79)
 
-      // Dashed divider
       doc.setDrawColor(55, 65, 81)
       doc.setLineDashPattern([2, 2], 0)
       doc.line(5, 85, 75, 85)
 
-      // QR Code
       const qrData = `BookingID:${item._id}|Movie:${item.show.movie.title}|Seats:${item.bookedSeats.join(',')}|Amount:NPR${item.amount}`
       const qrDataUrl = await QRCode.toDataURL(qrData, { width: 200, margin: 1 })
       doc.addImage(qrDataUrl, 'PNG', 25, 89, 30, 30)
 
-      // Footer
       doc.setLineDashPattern([], 0)
       doc.setTextColor(156, 163, 175)
       doc.setFontSize(6)
@@ -172,7 +163,9 @@ const MyBookings = () => {
         <p className='text-gray-400 text-center mt-20'>No bookings found!</p>
       )}
 
-      {bookings.map((item, index) => (
+      {bookings
+        .filter(item => item.show && item.show.movie)
+        .map((item, index) => (
         <div key={index} className='flex flex-col md:flex-row justify-between bg-primary/8 border border-primary/20 rounded-lg mt-4 p-2 max-w-3xl'>
 
           {/* Movie Info */}
@@ -202,7 +195,7 @@ const MyBookings = () => {
                     Pay Now
                   </button>
                   <p className='w-full text-xs text-yellow-400 mb-2 text-right'>
-                    ⚠️ This ticket will expire in 10 minutes if not paid!
+                    ⚠️ Ticket expires in 10 minutes if not paid!
                   </p>
                 </>
               )}

@@ -3,24 +3,35 @@ import './index.css'
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import { ClerkProvider } from '@clerk/clerk-react'
-import { AppProvider } from './context/appcontext.jsx' // may be mistakenly deleted
-
+import { AppProvider } from './context/appcontext.jsx'
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
-  if (!PUBLISHABLE_KEY) {
-    throw new Error('Add your Clerk Publishable Key to the .env file')
-  }
-
-
+if (!PUBLISHABLE_KEY) {
+  throw new Error('Add your Clerk Publishable Key to the .env file')
+}
 
 createRoot(document.getElementById('root')).render(
-  <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+  <ClerkProvider
+  publishableKey={PUBLISHABLE_KEY}
+  appearance={{
+    elements: {
+      footer: 'hidden',
+      footerAction: 'hidden',
+      footerActionLink: 'hidden',
+      badge: 'hidden',
+      userProfileFooter: 'hidden',
+      userProfileBadge: 'hidden'
+    }
+  }}
+>
+
     <BrowserRouter>
-    <AppProvider>
-      <App />
-    </AppProvider>
+      <AppProvider>
+        <App />
+      </AppProvider>
     </BrowserRouter>
-  </ClerkProvider>,
+  </ClerkProvider>
 )
+
 

@@ -30,3 +30,21 @@ input::-webkit-inner-spin-button {
 ::-webkit-calendar-picker-indicator {
   filter: invert(1);
 }
+
+
+
+/* Hide "Secured by Clerk" footer */
+.cl-footer {
+  display: none !important;
+}
+
+/* Hide "Development mode" badge */
+.cl-badge {
+  display: none !important;
+}
+
+/* Hide both at once */
+.cl-userProfile-root .cl-footer,
+.cl-userProfile-root .cl-badge {
+  display: none !important;
+}

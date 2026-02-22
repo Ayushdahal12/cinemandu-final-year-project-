@@ -63,6 +63,7 @@ import adminRouter from './routes/adminRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import theaterRouter from './routes/theaterRoutes.js'
 import aiRouter from './routes/aiRoutes.js'
+import cinepointsRouter from './routes/cinepointsRoutes.js'
 import { Webhook } from 'svix'
 import User from './models/User.js'
 
@@ -129,5 +130,6 @@ app.use('/api/admin', adminRouter)
 app.use('/api/user', userRouter)
 app.use('/api/theater', theaterRouter)
 app.use('/api/ai', aiRouter)
+app.use('/api/cinepoints', cinepointsRouter)
 
 app.listen(port, () => console.log(`Server listening at http://localhost:${port}`));

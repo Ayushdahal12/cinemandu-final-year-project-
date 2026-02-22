@@ -187,7 +187,8 @@ const Navbar = () => {
           <Link onClick={() => { scrollTo(0, 0); setIsOpen(false) }} to='/'>Home</Link>
           <Link onClick={() => { scrollTo(0, 0); setIsOpen(false) }} to='/movies'>Movies</Link>
           <Link onClick={() => { scrollTo(0, 0); setIsOpen(false) }} to='/theaters'>Theaters</Link>
-          <Link onClick={() => { scrollTo(0, 0); setIsOpen(false) }} to='/'>Top Rated</Link>
+          <Link onClick={() => { scrollTo(0, 0); setIsOpen(false) }} to='/cinepoints'>CinePoints</Link>
+          
           {favoriteMovies && favoriteMovies.length > 0 &&
             <Link onClick={() => { scrollTo(0, 0); setIsOpen(false) }} to='/favorite'>My Picks</Link>
           }

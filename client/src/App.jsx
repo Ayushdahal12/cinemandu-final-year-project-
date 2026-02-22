@@ -96,11 +96,13 @@ import CancelledBookings from './assets/pages/admin/CancelledBookings'
 import AdminTheaters from './assets/pages/admin/AdminTheaters'
 import Theaters from './assets/pages/Theaters'
 import AdminUsers from './assets/pages/admin/AdminUsers'
+import CinePoints from './assets/pages/CinePoints'
+
 
 // PROTECTED ROUTE GUARD
 const ProtectedRoute = ({ children }) => {
   const { user, isLoaded } = useUser()
-  
+
   if (!isLoaded) {
     return (
       <div className='min-h-screen flex items-center justify-center'>
@@ -108,7 +110,7 @@ const ProtectedRoute = ({ children }) => {
       </div>
     )
   }
-  
+
   return user ? children : <Navigate to="/" replace />
 }
 
@@ -120,7 +122,7 @@ const App = () => {
     <>
       <Toaster />
       {!isAdminRoute && <Navbar />}
-      
+
       <Routes>
         {/* PUBLIC - Browse freely */}
         <Route path='/' element={<Home />} />
@@ -129,6 +131,8 @@ const App = () => {
         <Route path='/movies' element={<Movies />} />
         <Route path='/movies/:id' element={<MovieDetails />} />
         <Route path='/favorite' element={<Favorite />} />
+        // inside Routes:
+        <Route path="/cinepoints" element={<CinePoints />} />
 
         {/* PROTECTED - Login required */}
         <Route path='/movies/:id/:date' element={
@@ -140,6 +144,7 @@ const App = () => {
         <Route path='/my-bookings' element={
           <ProtectedRoute><MyBookings /></ProtectedRoute>
         } />
+
 
         {/* ADMIN */}
         <Route path="/admin" element={user ? <Layout /> : (
@@ -157,7 +162,7 @@ const App = () => {
           <Route path="users" element={<AdminUsers />} />
         </Route>
       </Routes>
-      
+
       {!isAdminRoute && <Footer />}
     </>
   )

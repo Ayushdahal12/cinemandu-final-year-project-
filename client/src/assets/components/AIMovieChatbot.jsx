@@ -42,7 +42,7 @@ const AIMovieChatbot = ({ movie }) => {
     setLoading(true);
 
     try {
-      const { data } = await axios.post("/api/ai/movie-chat", {
+      const { data } = await axios.post("/api/ai/movie-chat", {       // internal api
         movie,
         messages: newMessages.slice(-8), // last 8 messages for context
         userMessage: userText,
